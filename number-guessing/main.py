@@ -1,6 +1,7 @@
+import argparse
 import random
 
-from constants import MAX_ATTEMPTS
+from config import levels
 
 
 def get_answer() -> int:
@@ -12,15 +13,34 @@ def get_answer() -> int:
     return input_number
 
 
+def get_args_from_console():
+    parser = argparse.ArgumentParser(
+        prog="Random Number Guessing Game",
+        description="The program will generate a random number and you will try to guess it",
+    )
+    parser.add_argument(
+        "-d",
+        "--difficulty",
+        choices=["easy", "normal", "hard"],
+        default="normal",
+        help="The difficulty level of the game",
+    )
+
+    return parser.parse_args()
+
+
 def main():
+    args = get_args_from_console()
+    level_config = levels[args.difficulty]
+
     attempts = 0
+    hidden_number = random.randint(0, level_config.upper_limit)
 
     while True:
         attempts += 1
-        hidden_number = random.randint(0, 100)
 
-        if attempts > MAX_ATTEMPTS:
-            print("Max attempts reached! You lost.")
+        if attempts > level_config.max_attempts:
+            print(f"Max attempts reached! You lost. Hidden number was {hidden_number}")
             break
 
         try:

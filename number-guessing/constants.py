@@ -1,1 +1,0 @@
-MAX_ATTEMPTS = 10
