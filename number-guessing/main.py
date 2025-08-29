@@ -1,42 +1,33 @@
-import argparse
 import random
 
 from config import LevelConfig, levels
+from utils import (
+    get_difficulty_from_console,
+    show_game_info,
+    show_game_title,
+    show_winning_info,
+)
 
 
 def get_answer(config: LevelConfig) -> int:
-    input_number = int(input("Pick a random number from 0 to 100: "))
+    input_number = int(input(f"Pick a random number from 0 to {config.upper_limit}: "))
 
     if input_number < 0 or input_number > config.upper_limit:
-        raise Exception("Number must be between 0 and 100")
+        raise Exception(f"Number must be between 0 and {config.upper_limit}")
 
     return input_number
 
 
-def get_args_from_console():
-    parser = argparse.ArgumentParser(
-        prog="Random Number Guessing Game",
-        description="The program will generate a random number and you will try to guess it",
-    )
-    parser.add_argument(
-        "-d",
-        "--difficulty",
-        choices=["easy", "normal", "hard"],
-        default="normal",
-        help="The difficulty level of the game",
-    )
-
-    return parser.parse_args()
-
-
 def main():
-    args = get_args_from_console()
-    level_config = levels[args.difficulty]
+    difficulty = get_difficulty_from_console()
+    level_config = levels[difficulty]
 
     attempts = 0
     hidden_number = random.randint(0, level_config.upper_limit)
+    show_game_title(difficulty)
 
     while True:
+        show_game_info(attempts, level_config)
         attempts += 1
 
         if attempts > level_config.max_attempts:
@@ -47,7 +38,7 @@ def main():
             answer = get_answer(level_config)
 
             if answer == hidden_number:
-                print("You won!")
+                show_winning_info()
                 break
             elif answer > hidden_number:
                 print("Pick a smaller number")
