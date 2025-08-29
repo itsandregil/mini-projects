@@ -1,13 +1,13 @@
 import argparse
 import random
 
-from config import levels
+from config import LevelConfig, levels
 
 
-def get_answer() -> int:
+def get_answer(config: LevelConfig) -> int:
     input_number = int(input("Pick a random number from 0 to 100: "))
 
-    if input_number < 0 or input_number > 100:
+    if input_number < 0 or input_number > config.upper_limit:
         raise Exception("Number must be between 0 and 100")
 
     return input_number
@@ -44,7 +44,7 @@ def main():
             break
 
         try:
-            answer = get_answer()
+            answer = get_answer(level_config)
 
             if answer == hidden_number:
                 print("You won!")
