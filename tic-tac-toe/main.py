@@ -1,17 +1,27 @@
 from board import Board
 from player import Player
 
+def make_move(board: Board, player: Player):
+    row, col = player.get_move()
+    if board.grid[row][col] != " ":
+        raise Exception("Invalid position, try again.")    
+    board.grid[row][col] = player.symbol
+
 def main():
     board = Board()
-    player = Player("Player1", "X")
+    player1 = Player("Player1", "X")
+    player2 = Player("Player2", "O")
 
     while True:
-        try:
-            board.display()
-            move = player.make_move()
-            board.update(move, player.symbol)
-        except Exception as e:
-            print(f"Error: {e}")
+        if board.is_full():
+            break
+        
+        for player in (player1, player2):
+            try:
+                board.display()
+                make_move(board, player)
+            except Exception as e:
+                print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
