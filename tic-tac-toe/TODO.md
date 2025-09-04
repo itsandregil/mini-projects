@@ -1,5 +1,0 @@
-- [x] Get input from player
-- [ ] Game loop
-- [x] Place input into board
-- [ ] Winning Logic
-- [ ] AI player (just choices random option)
